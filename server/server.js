@@ -15,35 +15,32 @@ import { stripeWebhooks } from "./controllers/orderController.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ Database + Cloudinary
+// Connect DB & Cloudinary
 await connectDB();
 await connectCloudinary();
 
-// ✅ Allowed frontend origins
-const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  "https://green-cart-app-liart.vercel.app", // deployed frontend
-];
-
-// ✅ Stripe webhook route must come BEFORE express.json()
-app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
-
-// ✅ Middlewares
-app.use(express.json());
-app.use(cookieParser());
-
-// ✅ Use CORS middleware (cleaner than manual headers)
+// ✅ Allow frontend URLs
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: [
+      "http://localhost:5173",
+      "https://green-cart-app-liart.vercel.app", // frontend Vercel domain
+    ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// ✅ Routes
+// Stripe webhook (must come before express.json)
+app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
+
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+
+// ✅ Default route
 app.get("/", (req, res) => res.send("API is working!"));
+
+// Routes
 app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
 app.use("/api/product", productRouter);
@@ -51,7 +48,7 @@ app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
 
-// ✅ Server listen
+// Start server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`PORT connected on ${port}`);
 });

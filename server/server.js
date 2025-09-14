@@ -19,7 +19,7 @@ const port = process.env.PORT || 4000;
 await connectDB();
 await connectCloudinary();
 
-// ✅ Allow frontend URLs
+// Allow frontend URLs
 app.use(
   cors({
     origin: [
@@ -37,7 +37,7 @@ app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Default route
+//Default route
 app.get("/", (req, res) => res.send("API is working!"));
 
 // Routes

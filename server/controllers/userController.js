@@ -21,7 +21,7 @@ export const register = async (req, res) => {
       expiresIn: "7d",
     });
 
-    // ✅ Always use secure cookies in production
+    //Always use secure cookies in production
     res.cookie("userToken", token, {
       httpOnly: true,
       secure: true, // must be true on Vercel (HTTPS)

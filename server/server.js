@@ -24,7 +24,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://green-cart-app-liart.vercel.app", // frontend Vercel domain
+      "https://greencart--liart.vercel.app", // frontend Vercel domain
     ],
     credentials: true,
   })
